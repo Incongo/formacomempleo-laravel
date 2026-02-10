@@ -10,11 +10,21 @@ class RoleMiddleware
     public function handle(Request $request, Closure $next, ...$roles)
     {
         $user = $request->user();
-        if (!$user) abort(401);
 
-        $role = is_object($user->role) ? $user->role->value : $user->role;
+        // Si no hay usuario autenticado → 401
+        if (!$user) {
+            abort(401);
+        }
 
-        if (!in_array($role, $roles, true)) abort(403);
+        // Convertimos el Enum a string si es necesario
+        $role = is_object($user->role)
+            ? $user->role->value
+            : $user->role;
+
+        // Si el rol del usuario no está permitido → 403
+        if (!in_array($role, $roles, true)) {
+            abort(403);
+        }
 
         return $next($request);
     }

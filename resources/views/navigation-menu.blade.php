@@ -76,11 +76,26 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            <div class="px-4 py-2 text-xs text-gray-500">Manage Account</div>
+                            <div class="px-4 py-2 text-xs text-gray-500">Administrar Perfil</div>
 
+                            <!-- Perfil de usuario (Jetstream) -->
                             <x-dropdown-link href="{{ route('profile.show') }}">
-                                Profile
+                                Perfil de usuario
                             </x-dropdown-link>
+
+                            <!-- SOLO EMPRESA -->
+                            @if(auth()->user()->role->value === 'empresa')
+                            <x-dropdown-link href="{{ route('empresa.perfil.edit') }}">
+                                Perfil de empresa
+                            </x-dropdown-link>
+                            @endif
+
+                            <!-- SOLO CANDIDATO -->
+                            @if(auth()->user()->role->value === 'candidato')
+                            <x-dropdown-link href="{{ route('candidato.perfil.edit') }}">
+                                Perfil de candidato
+                            </x-dropdown-link>
+                            @endif
 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                             <x-dropdown-link href="{{ route('api-tokens.index') }}">
@@ -94,52 +109,51 @@
                                 @csrf
                                 <x-dropdown-link href="{{ route('logout') }}"
                                     @click.prevent="$root.submit();">
-                                    Log Out
+                                    Cerrar sesión
                                 </x-dropdown-link>
                             </form>
                         </x-slot>
                     </x-dropdown>
                 </div>
-            </div>
 
-            <!-- Mobile Hamburger -->
-            <div class="sm:hidden flex items-center">
-                <button @click="open = ! open"
-                    class="text-white hover:text-[#4DA3D9] focus:outline-none">
-                    <svg class="h-6 w-6" fill="none" stroke="currentColor">
-                        <path :class="{'hidden': open, 'inline-flex': !open}"
-                            class="inline-flex"
-                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': !open, 'inline-flex': open}"
-                            class="hidden"
-                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
+                <!-- Mobile Hamburger -->
+                <div class="sm:hidden flex items-center">
+                    <button @click="open = ! open"
+                        class="text-white hover:text-[#4DA3D9] focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor">
+                            <path :class="{'hidden': open, 'inline-flex': !open}"
+                                class="inline-flex"
+                                stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                            <path :class="{'hidden': !open, 'inline-flex': open}"
+                                class="hidden"
+                                stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Mobile Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden bg-white text-gray-800 shadow-lg">
-        <div class="px-4 py-3 space-y-2">
+        <!-- Mobile Menu -->
+        <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden bg-white text-gray-800 shadow-lg">
+            <div class="px-4 py-3 space-y-2">
 
-            <x-responsive-nav-link href="{{ route('dashboard') }}">
-                Dashboard
-            </x-responsive-nav-link>
-
-            <x-responsive-nav-link href="{{ route('profile.show') }}">
-                Profile
-            </x-responsive-nav-link>
-
-            <form method="POST" action="{{ route('logout') }}" x-data>
-                @csrf
-                <x-responsive-nav-link href="{{ route('logout') }}"
-                    @click.prevent="$root.submit();">
-                    Log Out
+                <x-responsive-nav-link href="{{ route('dashboard') }}">
+                    Dashboard
                 </x-responsive-nav-link>
-            </form>
+
+                <x-responsive-nav-link href="{{ route('profile.show') }}">
+                    Profile
+                </x-responsive-nav-link>
+
+                <form method="POST" action="{{ route('logout') }}" x-data>
+                    @csrf
+                    <x-responsive-nav-link href="{{ route('logout') }}"
+                        @click.prevent="$root.submit();">
+                        Log Out
+                    </x-responsive-nav-link>
+                </form>
+            </div>
         </div>
-    </div>
 </nav>
