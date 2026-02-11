@@ -7,7 +7,9 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
         @forelse($ofertas as $oferta)
-        <div class="bg-white shadow-md rounded-xl p-6 border border-gray-100">
+        <a href="{{ route('candidato.ofertas.show', $oferta->id) }}"
+            class="block bg-white shadow-md rounded-xl p-6 border border-gray-100 hover:shadow-lg transition">
+
             <h3 class="text-xl font-semibold text-[#1F4E79]">
                 {{ $oferta->titulo }}
             </h3>
@@ -16,15 +18,18 @@
                 {{ Str::limit($oferta->descripcion, 120) }}
             </p>
 
-            <p class="text-sm text-gray-500 mt-3">
-                Empresa: <strong>{{ $oferta->empresa->nombre }}</strong>
-            </p>
+            <div class="mt-4 space-y-1 text-sm text-gray-500">
+                <p><strong>Empresa:</strong> {{ $oferta->empresa->nombre }}</p>
+                <p><strong>Ubicación:</strong> {{ $oferta->ubicacion }}</p>
+                <p><strong>Modalidad:</strong> {{ $oferta->modalidad }}</p>
+            </div>
 
-            <a href="{{ route('ofertas.show', $oferta) }}"
-                class="mt-4 inline-block bg-[#1F4E79] text-white px-4 py-2 rounded-lg hover:bg-[#163a5c]">
+            <span class="mt-4 inline-block bg-[#1F4E79] text-white px-4 py-2 rounded-lg hover:bg-[#163a5c]">
                 Ver oferta
-            </a>
-        </div>
+            </span>
+
+        </a>
+
         @empty
         <p class="text-gray-600">No hay ofertas disponibles en este momento.</p>
         @endforelse

@@ -1,19 +1,32 @@
 <x-app-layout>
+
     <x-slot name="header">
         @php
         $hour = now()->format('H');
-        if ($hour >= 6 && $hour < 12) {
-            $greeting='Buenos días' ;
-            } elseif ($hour>= 12 && $hour < 20) {
-                $greeting='Buenas tardes' ;
-                } else {
-                $greeting='Buenas noches' ;
-                }
-                @endphp
+        $greeting = $hour < 12 ? 'Buenos días' : ($hour < 20 ? 'Buenas tardes' : 'Buenas noches' );
+            @endphp
 
-                <h2 class="text-2xl font-bold">{{ $greeting }}, {{ Auth::user()->name }}</h2>
-                <p class="text-black/80 mt-1">Bienvenido a tu panel personal.</p>
+            <h2 class="text-2xl font-bold text-[#1F4E79]">
+            {{ $greeting }}, {{ Auth::user()->name }}
+            </h2>
+            <p class="text-black/80 mt-1">Bienvenido a tu panel de empresa.</p>
     </x-slot>
+
+    @php
+    $empresa = auth()->user()->empresa;
+
+    $totalOfertas = $empresa->ofertas()->count();
+    $ofertasActivas = $empresa->ofertas()->where('estado', 'activa')->count();
+
+    $postulaciones = \App\Models\Postulacion::whereHas('oferta', function ($q) use ($empresa) {
+    $q->where('empresa_id', $empresa->id);
+    });
+
+    $totalPostulaciones = $postulaciones->count();
+    $pendientes = $postulaciones->where('estado', 'pendiente')->count();
+    $aceptadas = $postulaciones->where('estado', 'aceptado')->count();
+    $rechazadas = $postulaciones->where('estado', 'rechazado')->count();
+    @endphp
 
     <!-- ACCESOS RÁPIDOS -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -37,28 +50,46 @@
 
         <!-- Ofertas activas -->
         <div class="bg-white shadow-md rounded-xl p-6 border border-gray-100">
-            ...
+            <h3 class="text-lg font-semibold text-[#1F4E79]">Ofertas activas</h3>
+            <p class="text-4xl font-bold mt-2">{{ $ofertasActivas }}</p>
+            <p class="text-gray-500 mt-1">Publicadas actualmente</p>
+        </div>
+
+        <!-- Total ofertas -->
+        <div class="bg-white shadow-md rounded-xl p-6 border border-gray-100">
+            <h3 class="text-lg font-semibold text-[#1F4E79]">Total de ofertas</h3>
+            <p class="text-4xl font-bold mt-2">{{ $totalOfertas }}</p>
+            <p class="text-gray-500 mt-1">Histórico de publicaciones</p>
         </div>
 
         <!-- Candidatos inscritos -->
         <div class="bg-white shadow-md rounded-xl p-6 border border-gray-100">
-            ...
+            <h3 class="text-lg font-semibold text-[#1F4E79]">Candidatos inscritos</h3>
+            <p class="text-4xl font-bold mt-2">{{ $totalPostulaciones }}</p>
+            <p class="text-gray-500 mt-1">En todas tus ofertas</p>
         </div>
 
         <!-- Solicitudes pendientes -->
         <div class="bg-white shadow-md rounded-xl p-6 border border-gray-100">
-            ...
+            <h3 class="text-lg font-semibold text-[#1F4E79]">Pendientes</h3>
+            <p class="text-4xl font-bold mt-2">{{ $pendientes }}</p>
+            <p class="text-gray-500 mt-1">Aún sin revisar</p>
         </div>
 
         <!-- Solicitudes aceptadas -->
         <div class="bg-white shadow-md rounded-xl p-6 border border-gray-100">
-            ...
+            <h3 class="text-lg font-semibold text-[#1F4E79]">Aceptadas</h3>
+            <p class="text-4xl font-bold mt-2">{{ $aceptadas }}</p>
+            <p class="text-gray-500 mt-1">Candidatos seleccionados</p>
         </div>
 
         <!-- Solicitudes rechazadas -->
         <div class="bg-white shadow-md rounded-xl p-6 border border-gray-100">
-            ...
+            <h3 class="text-lg font-semibold text-[#1F4E79]">Rechazadas</h3>
+            <p class="text-4xl font-bold mt-2">{{ $rechazadas }}</p>
+            <p class="text-gray-500 mt-1">Candidatos descartados</p>
         </div>
 
     </div>
+
 </x-app-layout>

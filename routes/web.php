@@ -6,6 +6,8 @@ use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\CandidatoController;
 use App\Http\Controllers\RegisterTypeController;
 use App\Http\Controllers\OfertaController;
+use App\Http\Controllers\PostulacionController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +48,14 @@ Route::get('/register/candidato', [CandidatoController::class, 'create'])
 
 Route::post('/register/candidato', [CandidatoController::class, 'store'])
     ->name('register.candidato.store');
+
+/*
+|--------------------------------------------------------------------------
+| VISTA PÚBLICA DE UNA OFERTA
+|--------------------------------------------------------------------------
+*/
+Route::get('/ofertas/{oferta}', [OfertaController::class, 'show'])
+    ->name('ofertas.show');
 
 /*
 |--------------------------------------------------------------------------
@@ -182,7 +192,9 @@ Route::middleware([
     | POSTULACIONES — CANDIDATO
     |--------------------------------------------------------------------------
     */
-        Route::post('/ofertas/{oferta}/postular', [PostulacionController::class, 'store'])
-            ->name('candidato.postular');
+        Route::get('/candidato/ofertas/{oferta}', [OfertaController::class, 'showCandidato'])
+            ->name('candidato.ofertas.show');
     });
+    Route::post('/candidato/ofertas/{oferta}/postular', [PostulacionController::class, 'store'])
+        ->name('candidato.postular');
 });

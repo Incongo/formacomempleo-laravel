@@ -89,6 +89,10 @@ class OfertaController extends Controller
             ->with('empresa')
             ->get();
 
-        return view('candidato.ofertas.index', compact('ofertas'));
+        return view('Candidato.ofertas.index', compact('ofertas'));
+    }
+    public function showCandidato(Oferta $oferta)
+    {
+        return view('Candidato.ofertas.show', compact('oferta'));
     }
 }

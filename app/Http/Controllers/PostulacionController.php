@@ -28,7 +28,7 @@ class PostulacionController extends Controller
 
         $request->validate([
             'mensaje' => 'nullable|string|max:2000',
-            'cv_personalizado' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+            'cv_personalizado' => 'nullable|file|mimes:pdf,doc,docx,odt,jpg|max:2048',
         ]);
 
         $cvPath = null;
@@ -42,10 +42,13 @@ class PostulacionController extends Controller
             'oferta_id' => $oferta->id,
             'mensaje' => $request->mensaje,
             'cv_personalizado' => $cvPath,
+            'estado' => 'pendiente', // ← ESTO ES LO QUE FALTABA
         ]);
 
         return back()->with('success', 'Te has inscrito correctamente en esta oferta.');
     }
+
+
 
     /*
     |--------------------------------------------------------------------------

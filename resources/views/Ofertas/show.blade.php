@@ -42,7 +42,12 @@
             </div>
 
         </div>
-
+        <!--Mostrar error si ya esta inscrito-->
+        @if(session('error'))
+        <div class="bg-red-500  px-4 py-2 rounded mb-4">
+            {{ session('error') }}
+        </div>
+        @endif
         <!-- Botón de inscripción -->
         @if(auth()->check() && auth()->user()->role->value === 'candidato')
         <div class="bg-white shadow-md rounded-xl p-8 border border-gray-100">
@@ -61,7 +66,7 @@
                     <input type="file" name="cv_personalizado" class="w-full border-gray-300 rounded-lg">
                 </div>
 
-                <button class="bg-[#1F4E79] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#163a5c]">
+                <button class="bg-[#1F4E79] text-black px-6 py-3 rounded-lg font-semibold hover:bg-[#163a5c]">
                     Inscribirme
                 </button>
             </form>

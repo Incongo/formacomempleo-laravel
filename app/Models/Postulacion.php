@@ -12,10 +12,11 @@ class Postulacion extends Model
     protected $fillable = [
         'candidato_id',
         'oferta_id',
-        'estado',
         'mensaje',
         'cv_personalizado',
+        'estado',
     ];
+
 
     /*
     |--------------------------------------------------------------------------
