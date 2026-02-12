@@ -141,4 +141,26 @@ class EmpresaController extends Controller
 
         return back()->with('success', 'Perfil actualizado correctamente.');
     }
+    public function postulaciones()
+    {
+        $empresa = auth()->user()->empresa;
+
+        $postulaciones = \App\Models\Postulacion::with(['candidato', 'oferta'])
+            ->whereHas('oferta', function ($q) use ($empresa) {
+                $q->where('empresa_id', $empresa->id);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('Empresa.postulaciones.index', compact('postulaciones'));
+    }
+    public function updatePostulacion(Request $request, $id)
+    {
+        $postulacion = \App\Models\Postulacion::findOrFail($id);
+
+        $postulacion->estado = $request->estado;
+        $postulacion->save();
+
+        return back()->with('success', 'Estado actualizado correctamente.');
+    }
 }

@@ -1,4 +1,6 @@
-<nav x-data="{ open: false }" class="bg-[#1F4E79] text-white shadow-md">
+<nav x-data="{ open: false }"
+    class="bg-[#1F4E79] dark:bg-gray-900 text-white shadow-md transition">
+
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -13,113 +15,128 @@
 
                 <!-- Desktop Navigation Links -->
                 <div class="hidden sm:flex space-x-6">
-                    <x-nav-link href="{{ route('dashboard') }}" class="text-white/90 hover:text-white">
-                        {{ __('Dashboard') }}
+
+                    <!-- Dashboard -->
+                    <x-nav-link href="{{ route('dashboard') }}" class="text-white/90 hover:text-white transition">
+                        <span class="flex items-center space-x-2">
+                            <!-- Home icon -->
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3 12l9-9 9 9M4 10v10h6v-6h4v6h6V10" />
+                            </svg>
+                            <span>Dashboard</span>
+                        </span>
                     </x-nav-link>
+
+                    <!-- SOLO EMPRESA -->
+                    @if(auth()->user()->role->value === 'empresa')
+                    <x-nav-link href="{{ route('empresa.ofertas.index') }}" class="text-white/90 hover:text-white transition">
+                        <span class="flex items-center space-x-2">
+                            <!-- Briefcase icon -->
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M4 7h16M4 7v10a2 2 0 002 2h12a2 2 0 002-2V7M10 7V5a2 2 0 012-2h0a2 2 0 012 2v2" />
+                            </svg>
+                            <span>Mis ofertas</span>
+                        </span>
+                    </x-nav-link>
+                    @endif
+
+                    <!-- SOLO CANDIDATO -->
+                    @if(auth()->user()->role->value === 'candidato')
+                    <x-nav-link href="{{ route('candidato.ofertas.index') }}" class="text-white/90 hover:text-white transition">
+                        <span class="flex items-center space-x-2">
+                            <!-- Clipboard icon -->
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 2h6a2 2 0 012 2v1H7V4a2 2 0 012-2zM7 7h10v12a2 2 0 01-2 2H9a2 2 0 01-2-2V7z" />
+                            </svg>
+                            <span>Ofertas</span>
+                        </span>
+                    </x-nav-link>
+                    @endif
+
                 </div>
             </div>
 
             <!-- Right side -->
             <div class="hidden sm:flex items-center space-x-4">
 
-                <!-- Teams Dropdown -->
-                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
-                <div class="relative">
-                    <x-dropdown align="right" width="60">
-                        <x-slot name="trigger">
-                            <button class="inline-flex items-center px-3 py-2 bg-[#1F4E79] text-white/90 hover:text-white rounded-md focus:outline-none">
-                                {{ Auth::user()->currentTeam->name }}
-                                <svg class="ms-2 -me-0.5 size-4" fill="none" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
-                                </svg>
-                            </button>
-                        </x-slot>
-
-                        <x-slot name="content">
-                            <div class="w-60">
-                                <div class="px-4 py-2 text-xs text-gray-500">Manage Team</div>
-
-                                <x-dropdown-link href="{{ route('teams.show', Auth::user()->currentTeam->id) }}">
-                                    Team Settings
-                                </x-dropdown-link>
-
-                                @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
-                                <x-dropdown-link href="{{ route('teams.create') }}">
-                                    Create New Team
-                                </x-dropdown-link>
-                                @endcan
-
-                                @if (Auth::user()->allTeams()->count() > 1)
-                                <div class="border-t border-gray-200 my-2"></div>
-                                <div class="px-4 py-2 text-xs text-gray-500">Switch Teams</div>
-
-                                @foreach (Auth::user()->allTeams() as $team)
-                                <x-switchable-team :team="$team" />
-                                @endforeach
-                                @endif
-                            </div>
-                        </x-slot>
-                    </x-dropdown>
-                </div>
-                @endif
+                <!-- Dark Mode Toggle -->
+                <button @click="document.documentElement.classList.toggle('dark')"
+                    class="p-2 rounded-md hover:bg-white/10 transition">
+                    <!-- Sun -->
+                    <svg class="w-6 h-6 dark:hidden" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 4V2m0 20v-2m8-8h2M2 12h2m14.364 6.364l1.414 1.414M4.222 4.222l1.414 1.414m12.728 0l1.414-1.414M4.222 19.778l1.414-1.414M12 8a4 4 0 100 8 4 4 0 000-8z" />
+                    </svg>
+                    <!-- Moon -->
+                    <svg class="w-6 h-6 hidden dark:block" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+                    </svg>
+                </button>
 
                 <!-- Profile Dropdown -->
-                <div class="relative">
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            <button class="flex items-center focus:outline-none">
-                                <img class="h-9 w-9 rounded-full border border-white/30 object-cover"
-                                    src="{{ Auth::user()->profile_photo_url }}"
-                                    alt="{{ Auth::user()->name }}" />
+                <div x-data="{ openProfile: false }" class="relative">
+
+                    <!-- Trigger -->
+                    <button @click="openProfile = !openProfile"
+                        class="flex items-center focus:outline-none">
+                        <img class="h-9 w-9 rounded-full border border-white/30 object-cover"
+                            src="{{ Auth::user()->profile_photo_url }}"
+                            alt="{{ Auth::user()->name }}" />
+                    </button>
+
+                    <!-- Dropdown -->
+                    <div x-show="openProfile"
+                        @click.away="openProfile = false"
+                        x-transition
+                        class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-lg shadow-lg py-2 z-50">
+
+                        <div class="px-4 py-2 text-xs text-gray-500 dark:text-gray-300">
+                            Administrar Perfil
+                        </div>
+
+                        <!-- Perfil Jetstream -->
+                        <a href="{{ route('profile.show') }}"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+                            Perfil de usuario
+                        </a>
+
+                        <!-- SOLO EMPRESA -->
+                        @if(auth()->user()->role->value === 'empresa')
+                        <a href="{{ route('empresa.perfil.edit') }}"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+                            Perfil de empresa
+                        </a>
+                        @endif
+
+                        <!-- SOLO CANDIDATO -->
+                        @if(auth()->user()->role->value === 'candidato')
+                        <a href="{{ route('candidato.perfil.edit') }}"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+                            Perfil de candidato
+                        </a>
+                        @endif
+
+                        <div class="border-t border-gray-200 dark:border-gray-700 my-2"></div>
+
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                Cerrar sesión
                             </button>
-                        </x-slot>
+                        </form>
 
-                        <x-slot name="content">
-                            <div class="px-4 py-2 text-xs text-gray-500">Administrar Perfil</div>
-
-                            <!-- Perfil de usuario (Jetstream) -->
-                            <x-dropdown-link href="{{ route('profile.show') }}">
-                                Perfil de usuario
-                            </x-dropdown-link>
-
-                            <!-- SOLO EMPRESA -->
-                            @if(auth()->user()->role->value === 'empresa')
-                            <x-dropdown-link href="{{ route('empresa.perfil.edit') }}">
-                                Perfil de empresa
-                            </x-dropdown-link>
-                            @endif
-
-                            <!-- SOLO CANDIDATO -->
-                            @if(auth()->user()->role->value === 'candidato')
-                            <x-dropdown-link href="{{ route('candidato.perfil.edit') }}">
-                                Perfil de candidato
-                            </x-dropdown-link>
-                            @endif
-
-                            @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-                            <x-dropdown-link href="{{ route('api-tokens.index') }}">
-                                API Tokens
-                            </x-dropdown-link>
-                            @endif
-
-                            <div class="border-t border-gray-200 my-2"></div>
-
-                            <form method="POST" action="{{ route('logout') }}" x-data>
-                                @csrf
-                                <x-dropdown-link href="{{ route('logout') }}"
-                                    @click.prevent="$root.submit();">
-                                    Cerrar sesión
-                                </x-dropdown-link>
-                            </form>
-                        </x-slot>
-                    </x-dropdown>
+                    </div>
                 </div>
+
 
                 <!-- Mobile Hamburger -->
                 <div class="sm:hidden flex items-center">
                     <button @click="open = ! open"
-                        class="text-white hover:text-[#4DA3D9] focus:outline-none">
+                        class="text-white hover:text-[#4DA3D9] focus:outline-none transition">
                         <svg class="h-6 w-6" fill="none" stroke="currentColor">
                             <path :class="{'hidden': open, 'inline-flex': !open}"
                                 class="inline-flex"
@@ -134,26 +151,54 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Mobile Menu -->
-        <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden bg-white text-gray-800 shadow-lg">
-            <div class="px-4 py-3 space-y-2">
+    <!-- Mobile Menu -->
+    <div :class="{'block': open, 'hidden': ! open}"
+        class="hidden sm:hidden bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 shadow-lg transition">
 
-                <x-responsive-nav-link href="{{ route('dashboard') }}">
-                    Dashboard
+        <div class="px-4 py-3 space-y-2">
+
+            <x-responsive-nav-link href="{{ route('dashboard') }}">
+                Dashboard
+            </x-responsive-nav-link>
+
+            @if(auth()->user()->role->value === 'empresa')
+            <x-responsive-nav-link href="{{ route('empresa.ofertas.index') }}">
+                Mis ofertas
+            </x-responsive-nav-link>
+            @endif
+
+            @if(auth()->user()->role->value === 'candidato')
+            <x-responsive-nav-link href="{{ route('candidato.ofertas.index') }}">
+                Ofertas disponibles
+            </x-responsive-nav-link>
+            @endif
+
+            <x-responsive-nav-link href="{{ route('profile.show') }}">
+                Perfil de usuario
+            </x-responsive-nav-link>
+
+            @if(auth()->user()->role->value === 'empresa')
+            <x-responsive-nav-link href="{{ route('empresa.perfil.edit') }}">
+                Perfil de empresa
+            </x-responsive-nav-link>
+            @endif
+
+            @if(auth()->user()->role->value === 'candidato')
+            <x-responsive-nav-link href="{{ route('candidato.perfil.edit') }}">
+                Perfil de candidato
+            </x-responsive-nav-link>
+            @endif
+
+            <form method="POST" action="{{ route('logout') }}" x-data>
+                @csrf
+                <x-responsive-nav-link href="{{ route('logout') }}"
+                    @click.prevent="$root.submit();">
+                    Cerrar sesión
                 </x-responsive-nav-link>
+            </form>
 
-                <x-responsive-nav-link href="{{ route('profile.show') }}">
-                    Profile
-                </x-responsive-nav-link>
-
-                <form method="POST" action="{{ route('logout') }}" x-data>
-                    @csrf
-                    <x-responsive-nav-link href="{{ route('logout') }}"
-                        @click.prevent="$root.submit();">
-                        Log Out
-                    </x-responsive-nav-link>
-                </form>
-            </div>
         </div>
+    </div>
 </nav>

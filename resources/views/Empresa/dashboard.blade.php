@@ -1,95 +1,92 @@
-<x-app-layout>
-
-    <x-slot name="header">
-        @php
-        $hour = now()->format('H');
-        $greeting = $hour < 12 ? 'Buenos días' : ($hour < 20 ? 'Buenas tardes' : 'Buenas noches' );
-            @endphp
-
-            <h2 class="text-2xl font-bold text-[#1F4E79]">
-            {{ $greeting }}, {{ Auth::user()->name }}
-            </h2>
-            <p class="text-black/80 mt-1">Bienvenido a tu panel de empresa.</p>
-    </x-slot>
+<x-layouts.dashboard>
 
     @php
     $empresa = auth()->user()->empresa;
 
-    $totalOfertas = $empresa->ofertas()->count();
-    $ofertasActivas = $empresa->ofertas()->where('estado', 'activa')->count();
+    $hour = now()->format('H');
+    $greeting = $hour < 12 ? 'Buenos días' : ($hour < 20 ? 'Buenas tardes' : 'Buenas noches' );
 
-    $postulaciones = \App\Models\Postulacion::whereHas('oferta', function ($q) use ($empresa) {
-    $q->where('empresa_id', $empresa->id);
-    });
+        $totalOfertas=$empresa->ofertas()->count();
+        $ofertasActivas = $empresa->ofertas()->where('estado', 'activa')->count();
 
-    $totalPostulaciones = $postulaciones->count();
-    $pendientes = $postulaciones->where('estado', 'pendiente')->count();
-    $aceptadas = $postulaciones->where('estado', 'aceptado')->count();
-    $rechazadas = $postulaciones->where('estado', 'rechazado')->count();
-    @endphp
+        $postulaciones = \App\Models\Postulacion::whereHas('oferta', function ($q) use ($empresa) {
+        $q->where('empresa_id', $empresa->id);
+        });
 
-    <!-- ACCESOS RÁPIDOS -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        $totalPostulaciones = $postulaciones->count();
+        $pendientes = $postulaciones->where('estado', 'pendiente')->count();
+        $aceptadas = $postulaciones->where('estado', 'aceptado')->count();
+        $rechazadas = $postulaciones->where('estado', 'rechazado')->count();
+        @endphp
 
-        <a href="{{ route('empresa.ofertas.index') }}"
-            class="bg-white shadow-md p-6 rounded-xl border border-gray-200 hover:bg-gray-50 transition">
-            <h3 class="text-lg font-semibold text-[#1F4E79]">Mis ofertas</h3>
-            <p class="text-gray-600 mt-2">Gestiona todas tus ofertas de empleo.</p>
-        </a>
+        <x-slot name="header">
+            <div class="flex items-center gap-4">
 
-        <a href="{{ route('empresa.ofertas.create') }}"
-            class="bg-white shadow-md p-6 rounded-xl border border-gray-200 hover:bg-gray-50 transition">
-            <h3 class="text-lg font-semibold text-[#1F4E79]">Crear oferta</h3>
-            <p class="text-gray-600 mt-2">Publica una nueva oferta de empleo.</p>
-        </a>
+                {{-- LOGO DE EMPRESA --}}
+                @if($empresa && $empresa->logo)
+                <img src="{{ asset('storage/' . $empresa->logo) }}"
+                    alt="Logo empresa"
+                    class="w-14 h-14 rounded-full object-cover border border-gray-300 dark:border-gray-600 shadow-sm">
+                @else
+                <div class="w-14 h-14 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 dark:text-gray-300 text-xl font-bold">
+                    {{ strtoupper(substr($empresa->nombre ?? 'E', 0, 1)) }}
+                </div>
+                @endif
 
-    </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-[#1F4E79] dark:text-indigo-300">
+                        {{ $greeting }}, {{ Auth::user()->name }}
+                    </h2>
+                    <p class="text-black/80 dark:text-gray-300 mt-1">Bienvenido a tu panel de empresa.</p>
+                </div>
 
-    <!-- TARJETAS DE ESTADÍSTICAS -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </x-slot>
 
-        <!-- Ofertas activas -->
-        <div class="bg-white shadow-md rounded-xl p-6 border border-gray-100">
-            <h3 class="text-lg font-semibold text-[#1F4E79]">Ofertas activas</h3>
-            <p class="text-4xl font-bold mt-2">{{ $ofertasActivas }}</p>
-            <p class="text-gray-500 mt-1">Publicadas actualmente</p>
+        <!-- ACCESOS RÁPIDOS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+
+            <a href="{{ route('empresa.ofertas.index') }}"
+                class="bg-white dark:bg-gray-800 shadow-md p-6 rounded-xl border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                <h3 class="text-lg font-semibold text-[#1F4E79] dark:text-indigo-300">Mis ofertas</h3>
+                <p class="text-gray-600 dark:text-gray-300 mt-2">Gestiona todas tus ofertas de empleo.</p>
+            </a>
+
+            <a href="{{ route('empresa.ofertas.create') }}"
+                class="bg-white dark:bg-gray-800 shadow-md p-6 rounded-xl border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                <h3 class="text-lg font-semibold text-[#1F4E79] dark:text-indigo-300">Crear oferta</h3>
+                <p class="text-gray-600 dark:text-gray-300 mt-2">Publica una nueva oferta de empleo.</p>
+            </a>
+
+
+            <a href="{{ route('empresa.postulaciones') }}"
+                class="bg-white dark:bg-gray-800 shadow-md p-6 rounded-xl border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                <h3 class="text-lg font-semibold text-[#1F4E79] dark:text-indigo-300">Candidatos inscritos</h3>
+                <p class="text-gray-600 dark:text-gray-300 mt-2">Revisa y gestiona las solicitudes recibidas.</p>
+            </a>
+
         </div>
 
-        <!-- Total ofertas -->
-        <div class="bg-white shadow-md rounded-xl p-6 border border-gray-100">
-            <h3 class="text-lg font-semibold text-[#1F4E79]">Total de ofertas</h3>
-            <p class="text-4xl font-bold mt-2">{{ $totalOfertas }}</p>
-            <p class="text-gray-500 mt-1">Histórico de publicaciones</p>
+        <!-- TARJETAS DE ESTADÍSTICAS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            @foreach([
+            ['Ofertas activas', $ofertasActivas],
+            ['Total de ofertas', $totalOfertas],
+            ['Candidatos inscritos', $totalPostulaciones],
+            ['Pendientes', $pendientes],
+            ['Aceptadas', $aceptadas],
+            ['Rechazadas', $rechazadas],
+            ] as [$titulo, $valor])
+
+            <div class="bg-white dark:bg-gray-800 shadow-md rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-semibold text-[#1F4E79] dark:text-indigo-300">{{ $titulo }}</h3>
+                <p class="text-4xl font-bold mt-2 text-gray-900 dark:text-gray-100">{{ $valor }}</p>
+                <p class="text-gray-500 dark:text-gray-400 mt-1">Estadística general</p>
+            </div>
+
+            @endforeach
+
         </div>
 
-        <!-- Candidatos inscritos -->
-        <div class="bg-white shadow-md rounded-xl p-6 border border-gray-100">
-            <h3 class="text-lg font-semibold text-[#1F4E79]">Candidatos inscritos</h3>
-            <p class="text-4xl font-bold mt-2">{{ $totalPostulaciones }}</p>
-            <p class="text-gray-500 mt-1">En todas tus ofertas</p>
-        </div>
-
-        <!-- Solicitudes pendientes -->
-        <div class="bg-white shadow-md rounded-xl p-6 border border-gray-100">
-            <h3 class="text-lg font-semibold text-[#1F4E79]">Pendientes</h3>
-            <p class="text-4xl font-bold mt-2">{{ $pendientes }}</p>
-            <p class="text-gray-500 mt-1">Aún sin revisar</p>
-        </div>
-
-        <!-- Solicitudes aceptadas -->
-        <div class="bg-white shadow-md rounded-xl p-6 border border-gray-100">
-            <h3 class="text-lg font-semibold text-[#1F4E79]">Aceptadas</h3>
-            <p class="text-4xl font-bold mt-2">{{ $aceptadas }}</p>
-            <p class="text-gray-500 mt-1">Candidatos seleccionados</p>
-        </div>
-
-        <!-- Solicitudes rechazadas -->
-        <div class="bg-white shadow-md rounded-xl p-6 border border-gray-100">
-            <h3 class="text-lg font-semibold text-[#1F4E79]">Rechazadas</h3>
-            <p class="text-4xl font-bold mt-2">{{ $rechazadas }}</p>
-            <p class="text-gray-500 mt-1">Candidatos descartados</p>
-        </div>
-
-    </div>
-
-</x-app-layout>
+</x-layouts.dashboard>

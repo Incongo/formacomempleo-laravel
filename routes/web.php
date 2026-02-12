@@ -132,7 +132,8 @@ Route::middleware([
         Route::get('/empresa/ofertas/{oferta}/editar', [OfertaController::class, 'edit'])
             ->name('empresa.ofertas.edit');
 
-        Route::post('/empresa/ofertas/{oferta}', [OfertaController::class, 'update'])
+        Route::match(['put', 'patch'], '/empresa/ofertas/{oferta}', [OfertaController::class, 'update'])
+
             ->name('empresa.ofertas.update');
 
         Route::delete('/empresa/ofertas/{oferta}', [OfertaController::class, 'destroy'])
@@ -151,6 +152,14 @@ Route::middleware([
 
         Route::delete('/empresa/postulaciones/{postulacion}', [PostulacionController::class, 'destroy'])
             ->name('empresa.postulaciones.destroy');
+
+        Route::get('/empresa/postulaciones', [EmpresaController::class, 'postulaciones'])
+            ->name('empresa.postulaciones')
+            ->middleware(['auth', 'role:empresa']);
+
+        Route::put('/empresa/postulaciones/{id}', [EmpresaController::class, 'updatePostulacion'])
+            ->name('empresa.postulaciones.update')
+            ->middleware(['auth', 'role:empresa']);
     });
 
     /*
