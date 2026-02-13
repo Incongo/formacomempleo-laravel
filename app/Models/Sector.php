@@ -22,8 +22,8 @@ class Sector extends Model
         return $this->belongsToMany(
             Empresa::class,
             'empresa_sector',
-            'idsector',
-            'idempresa'
+            'sector_id',
+            'empresa_id'
         );
     }
 }
