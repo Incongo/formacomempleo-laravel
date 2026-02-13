@@ -23,7 +23,7 @@
             <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
                 {{ $oferta->descripcion }}
             </p>
-
+            <p class="text-gray-700 dark:text-gray-300"><strong class="dark:text-gray-200">Sector:</strong>{{ $oferta->sector->nombre ?? 'Sin sector' }}</p>
             <p class="text-gray-700 dark:text-gray-300"><strong class="dark:text-gray-200">Ubicación:</strong> {{ $oferta->ubicacion }}</p>
             <p class="text-gray-700 dark:text-gray-300"><strong class="dark:text-gray-200">Contrato:</strong> {{ $oferta->tipo_contrato }}</p>
             <p class="text-gray-700 dark:text-gray-300"><strong class="dark:text-gray-200">Modalidad:</strong> {{ $oferta->modalidad }}</p>

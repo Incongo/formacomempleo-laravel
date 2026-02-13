@@ -141,19 +141,43 @@ class EmpresaController extends Controller
 
         return back()->with('success', 'Perfil actualizado correctamente.');
     }
-    public function postulaciones()
+    public function postulaciones(Request $request)
     {
         $empresa = auth()->user()->empresa;
 
-        $postulaciones = \App\Models\Postulacion::with(['candidato', 'oferta'])
+        $query = \App\Models\Postulacion::with(['candidato', 'oferta'])
             ->whereHas('oferta', function ($q) use ($empresa) {
                 $q->where('empresa_id', $empresa->id);
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
+            });
+
+        // Filtro por estado
+        if ($request->estado) {
+            $query->where('estado', $request->estado);
+        }
+
+        // Filtro por fecha desde
+        if ($request->fecha_desde) {
+            $query->whereDate('created_at', '>=', $request->fecha_desde);
+        }
+
+        // Filtro por fecha hasta
+        if ($request->fecha_hasta) {
+            $query->whereDate('created_at', '<=', $request->fecha_hasta);
+        }
+
+        // Filtro por palabras clave en mensaje o CV
+        if ($request->keyword) {
+            $query->where(function ($q) use ($request) {
+                $q->where('mensaje', 'LIKE', "%{$request->keyword}%")
+                    ->orWhere('cv_texto', 'LIKE', "%{$request->keyword}%");
+            });
+        }
+
+        $postulaciones = $query->orderBy('created_at', 'desc')->get();
 
         return view('Empresa.postulaciones.index', compact('postulaciones'));
     }
+
     public function updatePostulacion(Request $request, $id)
     {
         $postulacion = \App\Models\Postulacion::findOrFail($id);

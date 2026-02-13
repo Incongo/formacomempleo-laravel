@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Oferta extends Model
 {
-    use SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
         'empresa_id',
+        'sector_id',
         'titulo',
         'descripcion',
         'salario',
@@ -20,6 +21,8 @@ class Oferta extends Model
         'estado',
     ];
 
+
+
     public function empresa()
     {
         return $this->belongsTo(Empresa::class);
@@ -28,5 +31,9 @@ class Oferta extends Model
     public function postulaciones()
     {
         return $this->hasMany(Postulacion::class);
+    }
+    public function sector()
+    {
+        return $this->belongsTo(Sector::class);
     }
 }

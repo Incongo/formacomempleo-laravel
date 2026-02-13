@@ -24,7 +24,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M3 12l9-9 9 9M4 10v10h6v-6h4v6h6V10" />
                             </svg>
-                            <span>Dashboard</span>
+                            <span>Inicio</span>
                         </span>
                     </x-nav-link>
 
@@ -160,7 +160,7 @@
         <div class="px-4 py-3 space-y-2">
 
             <x-responsive-nav-link href="{{ route('dashboard') }}">
-                Dashboard
+                Inicio
             </x-responsive-nav-link>
 
             @if(auth()->user()->role->value === 'empresa')

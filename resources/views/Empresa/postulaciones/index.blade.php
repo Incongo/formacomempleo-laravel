@@ -6,6 +6,52 @@
         </h2>
     </x-slot>
 
+    <form method="GET" class="mb-8 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+            {{-- Estado --}}
+            <div>
+                <label class="font-semibold dark:text-gray-200">Estado</label>
+                <select name="estado" class="w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg">
+                    <option value="">Todos</option>
+                    <option value="pendiente" {{ request('estado') == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
+                    <option value="aceptado" {{ request('estado') == 'aceptado' ? 'selected' : '' }}>Aceptado</option>
+                    <option value="rechazada" {{ request('estado') == 'rechazada' ? 'selected' : '' }}>Rechazada</option>
+                </select>
+            </div>
+
+            {{-- Fecha desde --}}
+            <div>
+                <label class="font-semibold dark:text-gray-200">Fecha desde</label>
+                <input type="date" name="fecha_desde" value="{{ request('fecha_desde') }}"
+                    class="w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg">
+            </div>
+
+            {{-- Fecha hasta --}}
+            <div>
+                <label class="font-semibold dark:text-gray-200">Fecha hasta</label>
+                <input type="date" name="fecha_hasta" value="{{ request('fecha_hasta') }}"
+                    class="w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg">
+            </div>
+
+            {{-- Palabras clave --}}
+            <div>
+                <label class="font-semibold dark:text-gray-200">Buscar en CV o mensaje</label>
+                <input type="text" name="keyword" value="{{ request('keyword') }}"
+                    placeholder="Ej: Java, atención al cliente..."
+                    class="w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg">
+            </div>
+
+        </div>
+
+        <div class="flex justify-end mt-4">
+            <button class="bg-[#1F4E79] dark:bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-[#163a5c] dark:hover:bg-indigo-700">
+                Filtrar
+            </button>
+        </div>
+    </form>
+
+
     <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
 
         {{-- VERSIÓN PC (tabla) --}}
@@ -134,13 +180,14 @@
                         @method('PUT')
 
                         <select name="estado"
-                            class="w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg text-sm"
+                            class="w-full md:w-auto border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg text-sm"
                             onchange="this.form.submit()">
                             <option value="pendiente" {{ $postulacion->estado == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
                             <option value="aceptado" {{ $postulacion->estado == 'aceptado' ? 'selected' : '' }}>Aceptar</option>
                             <option value="rechazado" {{ $postulacion->estado == 'rechazado' ? 'selected' : '' }}>Rechazar</option>
                         </select>
                     </form>
+
 
                 </div>
 

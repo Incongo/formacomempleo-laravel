@@ -17,8 +17,10 @@ class OfertaController extends Controller
 
     public function create()
     {
-        return view('empresa.ofertas.create');
+        $sectores = \App\Models\Sector::orderBy('nombre')->get();
+        return view('empresa.ofertas.create', compact('sectores'));
     }
+
 
     public function store(Request $request)
     {
@@ -29,6 +31,7 @@ class OfertaController extends Controller
             'tipo_contrato' => 'nullable|string|max:100',
             'modalidad' => 'nullable|string|max:100',
             'ubicacion' => 'nullable|string|max:150',
+            'sector_id' => 'required|exists:sectores,id',
         ]);
 
         $empresa = auth()->user()->empresa;
@@ -40,12 +43,16 @@ class OfertaController extends Controller
             ->with('success', 'Oferta creada correctamente.');
     }
 
+
     public function edit(Oferta $oferta)
     {
         abort_if($oferta->empresa_id !== auth()->user()->empresa->id, 403);
 
-        return view('empresa.ofertas.edit', compact('oferta'));
+        $sectores = \App\Models\Sector::orderBy('nombre')->get();
+
+        return view('empresa.ofertas.edit', compact('oferta', 'sectores'));
     }
+
 
     public function update(Request $request, Oferta $oferta)
     {
@@ -59,6 +66,7 @@ class OfertaController extends Controller
             'modalidad' => 'nullable|string|max:100',
             'ubicacion' => 'nullable|string|max:150',
             'estado' => 'required|in:activa,pausada,cerrada',
+            'sector_id' => 'required|exists:sectores,id',
         ]);
 
         $oferta->update($request->all());
@@ -67,6 +75,7 @@ class OfertaController extends Controller
             ->route('empresa.ofertas.index')
             ->with('success', 'Oferta actualizada correctamente.');
     }
+
 
     public function destroy(Oferta $oferta)
     {
@@ -82,15 +91,36 @@ class OfertaController extends Controller
     {
         return view('ofertas.show', compact('oferta'));
     }
-    public function listadoCandidato()
+    public function listadoCandidato(Request $request)
     {
-        $ofertas = Oferta::where('estado', 'activa')
-            ->latest()
-            ->with('empresa')
-            ->get();
+        $query = Oferta::where('estado', 'activa')->with('empresa', 'sector');
 
-        return view('Candidato.ofertas.index', compact('ofertas'));
+        // Filtro por sector
+        if ($request->sector_id) {
+            $query->where('sector_id', $request->sector_id);
+        }
+
+        // Filtro por ubicación
+        if ($request->ubicacion) {
+            $query->where('ubicacion', 'LIKE', "%{$request->ubicacion}%");
+        }
+
+        // Filtro por modalidad
+        if ($request->modalidad) {
+            $query->where('modalidad', $request->modalidad);
+        }
+
+        // Filtro por salario mínimo (si el salario es texto tipo "30000 €/año")
+        if ($request->salario_min) {
+            $query->whereRaw("CAST(REPLACE(salario, ' €/año', '') AS UNSIGNED) >= ?", [$request->salario_min]);
+        }
+
+        $ofertas = $query->latest()->get();
+        $sectores = \App\Models\Sector::orderBy('nombre')->get();
+
+        return view('Candidato.ofertas.index', compact('ofertas', 'sectores'));
     }
+
     public function showCandidato(Oferta $oferta)
     {
         return view('Candidato.ofertas.show', compact('oferta'));

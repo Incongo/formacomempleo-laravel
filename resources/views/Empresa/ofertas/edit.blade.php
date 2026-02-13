@@ -25,6 +25,21 @@
                         required>
                 </div>
 
+                {{-- Sector --}}
+                <div>
+                    <label class="font-semibold dark:text-gray-200">Sector</label>
+                    <select name="sector_id"
+                        class="w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg" required>
+                        @foreach($sectores as $sector)
+                        <option value="{{ $sector->id }}"
+                            {{ $oferta->sector_id == $sector->id ? 'selected' : '' }}>
+                            {{ $sector->nombre }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+
+
                 {{-- Descripción --}}
                 <div class="md:col-span-2">
                     <label class="font-semibold dark:text-gray-200">Descripción</label>

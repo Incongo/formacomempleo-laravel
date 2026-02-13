@@ -140,33 +140,24 @@ Route::middleware([
             ->name('empresa.ofertas.destroy');
 
         /*
-    |--------------------------------------------------------------------------
-    | POSTULACIONES — EMPRESA
-    |--------------------------------------------------------------------------
-    */
+|--------------------------------------------------------------------------
+| POSTULACIONES — EMPRESA
+|--------------------------------------------------------------------------
+*/
+
         Route::get('/empresa/ofertas/{oferta}/postulaciones', [PostulacionController::class, 'index'])
             ->name('empresa.postulaciones.index');
-
-        Route::post('/empresa/postulaciones/{postulacion}/estado', [PostulacionController::class, 'update'])
-            ->name('empresa.postulaciones.update');
 
         Route::delete('/empresa/postulaciones/{postulacion}', [PostulacionController::class, 'destroy'])
             ->name('empresa.postulaciones.destroy');
 
         Route::get('/empresa/postulaciones', [EmpresaController::class, 'postulaciones'])
-            ->name('empresa.postulaciones')
-            ->middleware(['auth', 'role:empresa']);
+            ->name('empresa.postulaciones');
 
         Route::put('/empresa/postulaciones/{id}', [EmpresaController::class, 'updatePostulacion'])
-            ->name('empresa.postulaciones.update')
-            ->middleware(['auth', 'role:empresa']);
+            ->name('empresa.postulaciones.update');
     });
 
-    /*
-|--------------------------------------------------------------------------
-| CANDIDATO
-|--------------------------------------------------------------------------
-*/
     Route::middleware('role:candidato')->group(function () {
 
         /*
@@ -196,14 +187,15 @@ Route::middleware([
         Route::get('/candidato/ofertas', [OfertaController::class, 'listadoCandidato'])
             ->name('candidato.ofertas.index');
 
+        Route::get('/candidato/ofertas/{oferta}', [OfertaController::class, 'showCandidato'])
+            ->name('candidato.ofertas.show');
+
         /*
     |--------------------------------------------------------------------------
     | POSTULACIONES — CANDIDATO
     |--------------------------------------------------------------------------
     */
-        Route::get('/candidato/ofertas/{oferta}', [OfertaController::class, 'showCandidato'])
-            ->name('candidato.ofertas.show');
+        Route::post('/candidato/ofertas/{oferta}/postular', [PostulacionController::class, 'store'])
+            ->name('candidato.postular');
     });
-    Route::post('/candidato/ofertas/{oferta}/postular', [PostulacionController::class, 'store'])
-        ->name('candidato.postular');
 });

@@ -5,3 +5,123 @@
 [x-cloak] {
     display: none;
 }
+
+/* ---------------------------------------------------------
+   TÍTULOS DE SECCIÓN
+--------------------------------------------------------- */
+.dark h3,
+.dark .section-title,
+.dark .text-gray-900 {
+    color: #f3f4f6 !important;
+    /* gray-100 */
+}
+
+/* ---------------------------------------------------------
+   INPUTS, SELECTS, TEXTAREAS
+--------------------------------------------------------- */
+.dark input,
+.dark select,
+.dark textarea {
+    background-color: #1f2937 !important;
+    /* gray-800 */
+    color: #e5e7eb !important;
+    /* gray-200 */
+    border-color: #4b5563 !important;
+    /* gray-600 */
+}
+
+/* ---------------------------------------------------------
+   LABELS
+--------------------------------------------------------- */
+.dark label {
+    color: #e5e7eb !important;
+    /* gray-200 */
+}
+
+/* ---------------------------------------------------------
+   TEXTOS SECUNDARIOS
+--------------------------------------------------------- */
+.dark .text-gray-600 {
+    color: #d1d5db !important;
+    /* gray-300 */
+}
+
+.dark .text-gray-500 {
+    color: #9ca3af !important;
+    /* gray-400 */
+}
+
+/* ---------------------------------------------------------
+   FONDOS DE TARJETAS Y SECCIONES
+--------------------------------------------------------- */
+.dark .bg-white {
+    background-color: #1f2937 !important;
+    /* gray-800 */
+}
+
+.dark .bg-gray-100 {
+    background-color: #374151 !important;
+    /* gray-700 */
+}
+
+/* ---------------------------------------------------------
+   FOOTERS DE FORMULARIOS JETSTREAM
+   (El famoso problema de la franja blanca)
+--------------------------------------------------------- */
+
+/* Jetstream usa bg-gray-50 en el footer del botón GUARDAR */
+.dark .bg-gray-50 {
+    background-color: #1f2937 !important;
+    /* gray-800 */
+}
+
+/* Por si Jetstream usa variantes más claras */
+.dark .bg-gray-50,
+.dark .bg-gray-100,
+.dark .bg-gray-200 {
+    background-color: #1f2937 !important;
+}
+
+/* Footer específico de <x-form-section> */
+.dark .flex.items-center.justify-end.mt-4 {
+    background-color: #1f2937 !important;
+}
+
+/* Si quieres usar clases personalizadas */
+.dark .form-section-footer,
+.dark .action-section-footer {
+    background-color: #1f2937 !important;
+}
+
+/* ---------------------------------------------------------
+   MENÚ DESPLEGABLE (Dropdown Jetstream) EN MODO OSCURO
+--------------------------------------------------------- */
+
+/* Fondo del menú */
+.dark .bg-white {
+    background-color: #1f2937 !important;
+    /* gray-800 */
+}
+
+/* Fondo específico del dropdown */
+.dark .origin-top-right.absolute.right-0.mt-2 {
+    background-color: #1f2937 !important;
+}
+
+/* Texto del dropdown */
+.dark .text-gray-700,
+.dark .text-gray-800 {
+    color: #e5e7eb !important;
+    /* gray-200 */
+}
+
+/* Líneas divisorias */
+.dark .divide-gray-100 {
+    border-color: #374151 !important;
+    /* gray-700 */
+}
+
+/* Borde exterior del menú */
+.dark .ring-black\/5 {
+    --tw-ring-color: rgba(255, 255, 255, 0.1) !important;
+}
