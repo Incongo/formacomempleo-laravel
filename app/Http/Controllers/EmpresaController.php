@@ -169,7 +169,7 @@ class EmpresaController extends Controller
         if ($request->keyword) {
             $query->where(function ($q) use ($request) {
                 $q->where('mensaje', 'LIKE', "%{$request->keyword}%")
-                    ->orWhere('cv_texto', 'LIKE', "%{$request->keyword}%");
+                    ->orWhere('cv_personalizado', 'LIKE', "%{$request->keyword}%");
             });
         }
 

@@ -1,58 +1,100 @@
 <x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
+
+    <div class="min-h-screen flex flex-col items-center justify-center px-4">
+
+        {{-- Logo arriba --}}
+        <div class="mb-6">
             <x-authentication-card-logo />
-        </x-slot>
+        </div>
 
-        <div x-data="{ recovery: false }">
-            <div class="mb-4 text-sm text-gray-600" x-show="! recovery">
-                {{ __('Please confirm access to your account by entering the authentication code provided by your authenticator application.') }}
+        {{-- Tarjeta --}}
+        <div class="bg-white dark:bg-gray-800 shadow-xl rounded-xl p-10 
+                    w-full max-w-md border border-gray-200 dark:border-gray-700"
+            x-data="{ recovery: false }">
+
+            <h1 class="text-2xl font-bold mb-4 text-center text-[#1F4E79] dark:text-indigo-300">
+                Autenticación en dos pasos
+            </h1>
+
+            {{-- Texto modo normal --}}
+            <p class="text-gray-600 dark:text-gray-300 mb-6" x-show="!recovery">
+                Confirma el acceso introduciendo el código generado por tu aplicación de autenticación.
+            </p>
+
+            {{-- Texto modo recuperación --}}
+            <p class="text-gray-600 dark:text-gray-300 mb-6" x-show="recovery" x-cloak>
+                Introduce uno de tus códigos de recuperación para acceder a tu cuenta.
+            </p>
+
+            {{-- Errores --}}
+            @if ($errors->any())
+            <div class="mb-4 p-4 bg-red-100 text-red-700 rounded-lg dark:bg-red-900 dark:text-red-300">
+                <ul class="list-disc list-inside text-sm">
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
-
-            <div class="mb-4 text-sm text-gray-600" x-cloak x-show="recovery">
-                {{ __('Please confirm access to your account by entering one of your emergency recovery codes.') }}
-            </div>
-
-            <x-validation-errors class="mb-4" />
+            @endif
 
             <form method="POST" action="{{ route('two-factor.login') }}">
                 @csrf
 
-                <div class="mt-4" x-show="! recovery">
-                    <x-label for="code" value="{{ __('Code') }}" />
-                    <x-input id="code" class="block mt-1 w-full" type="text" inputmode="numeric" name="code" autofocus x-ref="code" autocomplete="one-time-code" />
+                {{-- Código normal --}}
+                <div x-show="!recovery">
+                    <label for="code" class="font-semibold dark:text-gray-200">Código</label>
+                    <input id="code" type="text" name="code" inputmode="numeric"
+                        class="block mt-1 w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg"
+                        autofocus autocomplete="one-time-code"
+                        x-ref="code">
                 </div>
 
-                <div class="mt-4" x-cloak x-show="recovery">
-                    <x-label for="recovery_code" value="{{ __('Recovery Code') }}" />
-                    <x-input id="recovery_code" class="block mt-1 w-full" type="text" name="recovery_code" x-ref="recovery_code" autocomplete="one-time-code" />
+                {{-- Código de recuperación --}}
+                <div x-show="recovery" x-cloak>
+                    <label for="recovery_code" class="font-semibold dark:text-gray-200">Código de recuperación</label>
+                    <input id="recovery_code" type="text" name="recovery_code"
+                        class="block mt-1 w-full border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg"
+                        autocomplete="one-time-code"
+                        x-ref="recovery_code">
                 </div>
 
-                <div class="flex items-center justify-end mt-4">
-                    <button type="button" class="text-sm text-gray-600 hover:text-gray-900 underline cursor-pointer"
-                                    x-show="! recovery"
-                                    x-on:click="
-                                        recovery = true;
-                                        $nextTick(() => { $refs.recovery_code.focus() })
-                                    ">
-                        {{ __('Use a recovery code') }}
+                {{-- Acciones --}}
+                <div class="flex items-center justify-between mt-6">
+
+                    {{-- Cambiar a código de recuperación --}}
+                    <button type="button"
+                        class="text-sm text-gray-600 dark:text-gray-300 hover:text-[#1F4E79] dark:hover:text-indigo-400 underline"
+                        x-show="!recovery"
+                        x-on:click="
+                            recovery = true;
+                            $nextTick(() => { $refs.recovery_code.focus() })
+                        ">
+                        Usar un código de recuperación
                     </button>
 
-                    <button type="button" class="text-sm text-gray-600 hover:text-gray-900 underline cursor-pointer"
-                                    x-cloak
-                                    x-show="recovery"
-                                    x-on:click="
-                                        recovery = false;
-                                        $nextTick(() => { $refs.code.focus() })
-                                    ">
-                        {{ __('Use an authentication code') }}
+                    {{-- Cambiar a código normal --}}
+                    <button type="button"
+                        class="text-sm text-gray-600 dark:text-gray-300 hover:text-[#1F4E79] dark:hover:text-indigo-400 underline"
+                        x-show="recovery"
+                        x-cloak
+                        x-on:click="
+                            recovery = false;
+                            $nextTick(() => { $refs.code.focus() })
+                        ">
+                        Usar un código de autenticación
                     </button>
 
-                    <x-button class="ms-4">
-                        {{ __('Log in') }}
-                    </x-button>
+                    {{-- Botón de enviar --}}
+                    <button
+                        class="bg-[#1F4E79] dark:bg-indigo-600 text-white px-6 py-2 rounded-lg font-semibold
+                               hover:bg-[#163a5c] dark:hover:bg-indigo-700 transition ms-4">
+                        Entrar
+                    </button>
                 </div>
+
             </form>
+
         </div>
-    </x-authentication-card>
+    </div>
+
 </x-guest-layout>
