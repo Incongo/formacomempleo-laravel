@@ -33,6 +33,11 @@
                     <td class="py-3 text-gray-800 dark:text-gray-200">{{ $oferta->created_at->format('d/m/Y') }}</td>
 
                     <td class="py-3 text-right">
+                        <a href="{{ route('empresa.ofertas.ver', $oferta) }}"
+                            class="text-green-600 dark:text-green-400 hover:underline mr-3">
+                            Ver detalles
+                        </a>
+
                         <a href="{{ route('empresa.ofertas.edit', $oferta) }}"
                             class="text-blue-600 dark:text-blue-400 hover:underline mr-3">
                             Editar

@@ -132,6 +132,9 @@ Route::middleware([
         Route::get('/empresa/ofertas/{oferta}/editar', [OfertaController::class, 'edit'])
             ->name('empresa.ofertas.edit');
 
+        Route::get('/empresa/ofertas/{oferta}/ver', [OfertaController::class, 'show'])
+            ->name('empresa.ofertas.ver');
+
         Route::match(['put', 'patch'], '/empresa/ofertas/{oferta}', [OfertaController::class, 'update'])
 
             ->name('empresa.ofertas.update');

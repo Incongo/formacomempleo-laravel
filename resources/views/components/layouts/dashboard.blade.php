@@ -55,6 +55,13 @@
                                 </a>
                                 @endif
 
+                                @if(Auth::user()->role->value === 'empresa')
+                                <a href="{{ route('empresa.postulaciones') }}"
+                                    class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">
+                                    Candidatos inscritos
+                                </a>
+                                @endif
+
                                 @if(Auth::user()->role->value === 'candidato')
                                 <a href="{{ route('candidato.ofertas.index') }}"
                                     class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">

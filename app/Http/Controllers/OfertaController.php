@@ -89,7 +89,9 @@ class OfertaController extends Controller
     }
     public function show(Oferta $oferta)
     {
-        return view('ofertas.show', compact('oferta'));
+        // Cargar postulaciones con candidato
+        $postulaciones = $oferta->postulaciones()->with('candidato')->get();
+        return view('empresa.ofertas.show', compact('oferta', 'postulaciones'));
     }
     public function listadoCandidato(Request $request)
     {

@@ -139,17 +139,30 @@ class CandidatoController extends Controller
             'cv'                => 'nullable|mimes:pdf,doc,docx|max:4096',
         ]);
 
+        // Actualizar datos normales
         $candidato->update($request->except('foto', 'cv'));
 
+        // Guardar foto con nombre único
         if ($request->hasFile('foto')) {
-            $path = $request->file('foto')->store('fotos', 'public');
-            $candidato->update(['foto' => $path]);
+            $path = $request->file('foto')->storeAs(
+                'fotos',
+                time() . '_' . $request->file('foto')->getClientOriginalName(),
+                'public'
+            );
+            $candidato->foto = $path;
         }
 
+        // Guardar CV con nombre único
         if ($request->hasFile('cv')) {
-            $path = $request->file('cv')->store('cv', 'public');
-            $candidato->update(['cv' => $path]);
+            $path = $request->file('cv')->storeAs(
+                'cv',
+                time() . '_' . $request->file('cv')->getClientOriginalName(),
+                'public'
+            );
+            $candidato->cv = $path;
         }
+
+        $candidato->save();
 
         return back()->with('success', 'Perfil actualizado correctamente.');
     }
