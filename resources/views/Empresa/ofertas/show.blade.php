@@ -30,7 +30,9 @@
         @if($postulaciones->isEmpty())
         <p class="text-gray-500 dark:text-gray-400">No hay candidatos inscritos todavía.</p>
         @else
-        <div class="space-y-4">
+
+        {{-- GRID RESPONSIVE: 1 columna en móvil, 3 columnas en PC --}}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
             @foreach($postulaciones as $postulacion)
             <div class="p-4 rounded-xl border dark:border-gray-700 bg-gray-50 dark:bg-gray-900">

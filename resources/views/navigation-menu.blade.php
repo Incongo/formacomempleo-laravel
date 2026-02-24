@@ -10,7 +10,7 @@
 
                 <!-- Logo -->
                 <a href="{{ route('dashboard') }}" class="flex items-center">
-                    <x-application-mark class="block h-9 w-auto" />
+                    <img src="{{ asset('logo.jpg') }}" class="size-8" alt="Logo">
                 </a>
 
                 <!-- Desktop Navigation Links -->

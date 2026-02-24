@@ -166,4 +166,15 @@ class CandidatoController extends Controller
 
         return back()->with('success', 'Perfil actualizado correctamente.');
     }
+    public function misPostulaciones()
+    {
+        $candidato = auth()->user()->candidato;
+
+        $postulaciones = $candidato->postulaciones()
+            ->with('oferta')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('candidato.postulaciones.index', compact('postulaciones'));
+    }
 }

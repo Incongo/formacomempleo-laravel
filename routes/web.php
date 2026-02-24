@@ -200,5 +200,13 @@ Route::middleware([
     */
         Route::post('/candidato/ofertas/{oferta}/postular', [PostulacionController::class, 'store'])
             ->name('candidato.postular');
+
+        /*
+    |--------------------------------------------------------------------------
+    | MIS POSTULACIONES — CANDIDATO
+    |--------------------------------------------------------------------------
+    */
+        Route::get('/candidato/mis-postulaciones', [CandidatoController::class, 'misPostulaciones'])
+            ->name('candidato.postulaciones.index');
     });
 });

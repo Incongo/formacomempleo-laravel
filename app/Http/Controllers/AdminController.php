@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Oferta;
+use App\Models\Postulacion;
 
 class AdminController extends Controller
 {
@@ -10,17 +12,21 @@ class AdminController extends Controller
     {
         /*
         |--------------------------------------------------------------------------
-        | TEMPORAL
+        | ESTADÍSTICAS REALES DEL SISTEMA
         |--------------------------------------------------------------------------
-        | Estos valores simulan lo que luego vendrá de la base de datos.
-        | Cuando tengas las tablas, aquí pondremos los count() reales.
         */
 
-        $ofertasActivas = 0;
-        $candidatosInscritos = 0;
-        $solicitudesPendientes = 0;
-        $solicitudesAceptadas = 0;
-        $solicitudesRechazadas = 0;
+        // Ofertas activas en toda la plataforma
+        $ofertasActivas = Oferta::where('estado', 'activa')->count();
+
+        // Base de todas las postulaciones
+        $postulacionesBase = Postulacion::query();
+
+        // Estadísticas globales
+        $candidatosInscritos = (clone $postulacionesBase)->count();
+        $solicitudesPendientes = (clone $postulacionesBase)->where('estado', 'pendiente')->count();
+        $solicitudesAceptadas = (clone $postulacionesBase)->where('estado', 'aceptado')->count();
+        $solicitudesRechazadas = (clone $postulacionesBase)->where('estado', 'rechazado')->count();
 
         return view('admin.dashboard', compact(
             'ofertasActivas',

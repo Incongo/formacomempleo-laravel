@@ -9,15 +9,16 @@
         $totalOfertas=$empresa->ofertas()->count();
         $ofertasActivas = $empresa->ofertas()->where('estado', 'activa')->count();
 
-        $postulaciones = \App\Models\Postulacion::whereHas('oferta', function ($q) use ($empresa) {
+        $postulacionesBase = \App\Models\Postulacion::whereHas('oferta', function ($q) use ($empresa) {
         $q->where('empresa_id', $empresa->id);
         });
 
-        $totalPostulaciones = $postulaciones->count();
-        $pendientes = $postulaciones->where('estado', 'pendiente')->count();
-        $aceptadas = $postulaciones->where('estado', 'aceptado')->count();
-        $rechazadas = $postulaciones->where('estado', 'rechazado')->count();
+        $totalPostulaciones = (clone $postulacionesBase)->count();
+        $pendientes = (clone $postulacionesBase)->where('estado', 'pendiente')->count();
+        $aceptadas = (clone $postulacionesBase)->where('estado', 'aceptado')->count();
+        $rechazadas = (clone $postulacionesBase)->where('estado', 'rechazado')->count();
         @endphp
+
 
         <x-slot name="header">
             <div class="flex items-center gap-4">
