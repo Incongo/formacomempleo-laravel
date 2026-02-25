@@ -1,59 +1,156 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🧩 Portal de Empleo – Laravel 10
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplicación web desarrollada en Laravel 10 que permite la gestión completa de ofertas de empleo, empresas, candidatos y postulaciones.  
+Incluye autenticación, roles, dashboards personalizados, subida de archivos, filtros avanzados y panel de administración.
 
-## About Laravel
+## 🚀 Características principales
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### 👥 Roles de usuario
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Administrador
+- Empresa
+- Candidato
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Cada rol tiene su propio dashboard y permisos.
 
-## Learning Laravel
+## 🏗️ Tecnologías utilizadas
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- Laravel 10
+- PHP 8+
+- MySQL
+- TailwindCSS
+- Blade Components
+- Jetstream + Sanctum
+- Alpine.js
+- Storage público para fotos y CVs
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 📁 Estructura del proyecto
 
-## Laravel Sponsors
+app/
+├── Http/
+│ ├── Controllers/
+│ │ ├── AdminController.php
+│ │ ├── EmpresaController.php
+│ │ ├── CandidatoController.php
+│ │ ├── OfertaController.php
+│ │ └── PostulacionController.php
+│ └── Middleware/
+├── Models/
+│ ├── User.php
+│ ├── Empresa.php
+│ ├── Candidato.php
+│ ├── Oferta.php
+│ └── Postulacion.php
+resources/
+├── views/
+│ ├── admin/
+│ ├── empresa/
+│ ├── candidato/
+│ ├── ofertas/
+│ └── components/
+routes/
+├── web.php
+└── api.php
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🔐 Sistema de roles
 
-### Premium Partners
+El sistema utiliza un campo "role" en la tabla users con valores: admin, empresa, candidato.  
+Cada rol tiene su propio middleware: role:admin, role:empresa, role:candidato.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 📝 Funcionalidades implementadas
 
-## Contributing
+### ✔ Registro personalizado
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- Registro separado para empresa y candidato.
+- Validación completa.
+- Creación automática de modelos relacionados.
 
-## Code of Conduct
+### ✔ Gestión de ofertas (empresa)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Crear, editar, eliminar.
+- Ver detalle de oferta.
+- Ver candidatos inscritos.
+- Cambiar estado de postulaciones.
+- Vista responsive con grid de 3 columnas en PC.
 
-## Security Vulnerabilities
+### ✔ Gestión de postulaciones
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- El candidato puede postularse con mensaje.
+- La empresa puede ver CV, mensaje, aceptar o rechazar.
+- Modal con detalles del candidato.
 
-## License
+### ✔ Dashboard empresa
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Ofertas activas
+- Total de ofertas
+- Candidatos inscritos
+- Pendientes / aceptadas / rechazadas
+
+### ✔ Dashboard candidato
+
+- Ofertas disponibles
+- Postulaciones realizadas
+- Filtros por estado y fecha
+- Vista responsive en grid
+
+### ✔ Dashboard administrador
+
+- Ofertas activas globales
+- Total de postulaciones
+- Pendientes / aceptadas / rechazadas
+
+## 📤 Subida de archivos
+
+El candidato puede subir foto y CV.  
+Los archivos se guardan en:
+
+storage/app/public/fotos  
+storage/app/public/cv
+
+Crear enlace público:
+
+php artisan storage:link
+
+## 🔍 Filtros implementados
+
+### Empresa
+
+- Estado
+- Fecha desde / hasta
+- Palabras clave (mensaje o CV)
+
+### Candidato
+
+- Estado
+- Fecha desde / hasta
+
+## 🧪 Pendiente de implementar
+
+- Panel completo de administración
+- Notificaciones por email
+- Chat empresa–candidato
+- Gráficas estadísticas
+- Buscador global
+- Paginación
+- Favoritos
+- Ofertas destacadas
+
+## ⚙️ Instalación
+
+git clone <repo>  
+cd proyecto  
+composer install  
+npm install && npm run build  
+cp .env.example .env  
+php artisan key:generate  
+php artisan migrate  
+php artisan storage:link  
+php artisan serve
+
+## 👨‍💻 Autor
+
+Proyecto desarrollado por Pablo.
+
+## 📜 Licencia
+
+MIT
